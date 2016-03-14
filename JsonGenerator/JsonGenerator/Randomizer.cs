@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace JsonGenerator
 {
     class Randomizer
     {
+        /// <summary>
+        /// Returns one of random Names
+        /// </summary>
         public static string GetRandomeName(Random random)
         {
             string[] studentsNames = { "Ivanov", "Petrov", "Sidorov", "Vasilev", "Koltsov", "Makarova", "Zubkov", "Ignatov", "Kolobkova", "Kanatnikov" };
@@ -15,6 +14,9 @@ namespace JsonGenerator
             return studentName;
         }
 
+        /// <summary>
+        /// Returns one of random Subjects
+        /// </summary>
         public static string GetRandomSubject(Random random)
         {
             string[] subjectList = { "Mathematics", "Geometry", "Russian", "English", "Physical Education", "Music", "History", "Geography", "Social Studies", "Physics",
@@ -23,6 +25,9 @@ namespace JsonGenerator
             return subject;
         }
 
+        /// <summary>
+        /// Returns one of random Marks
+        /// </summary>
         public static int GetRandomMark(Random random)
         {
             int mark = random.Next(2, 6);

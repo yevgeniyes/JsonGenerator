@@ -1,30 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Runtime.Serialization;
 using System.IO;
 using System.Runtime.Serialization.Json;
 
 namespace JsonGenerator
 {
-    class GeneratorBase
+    class Generator
     {
+        /// <summary>
+        /// Generates json file with random number of objects and random data: students.json file and index.html are located in C:\JsonGenerator\
+        /// </summary>
         public void GenerateJson()
         {
-            if (!Directory.Exists(@"C:\JsonGenerator"))
-                Directory.CreateDirectory(@"C:\JsonGenerator");
-
-            if (Directory.Exists(@"C:\JsonGenerator"))
-            {
-                File.WriteAllText(@"C:\JsonGenerator\index.html", Properties.Resources.index);
-                try
-                {
-                    File.Delete(@"C:\JsonGenerator\students.json");
-                }
-                catch { }
-            }
+            ProgramInitialization.Initialize();
 
             Random random = new Random((int)DateTime.Now.Ticks);
 
