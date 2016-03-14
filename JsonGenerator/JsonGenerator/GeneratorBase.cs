@@ -18,6 +18,7 @@ namespace JsonGenerator
 
             if (Directory.Exists(@"C:\JsonGenerator"))
             {
+                File.WriteAllText(@"C:\JsonGenerator\index.html", Properties.Resources.index);
                 try
                 {
                     File.Delete(@"C:\JsonGenerator\students.json");

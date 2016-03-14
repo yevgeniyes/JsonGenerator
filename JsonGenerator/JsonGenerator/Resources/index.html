@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; Charset=UTF-8">
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+  <script>
+  $(document).ready(function(){  
+   $('#btn').click(function(){ 
+   $.getJSON("students.json", function(data) {
+		$.each( data, function( index, item ) {
+			var table_row = "<tr>" + 
+            "<td>" + item.Name + "</td>" +
+            "<td>" + item.Subject + "</td>" +
+			"<td>" + item.Mark + "</td>" +
+			"</tr>";
+			$("#table_content tbody").append(table_row);
+	    });
+		}); 
+     });  
+    }); 
+  </script>
+  <style>
+   #table_content
+   {
+   background-color:#00CCFF;
+   color:#000000;
+   }
+  </style>
+ </head>
+ <body>
+  <p>Test page for testing JsonGenerator</p>  
+  <form>  
+   <input id="btn" type="button" value="Click to get json">    
+  </form>
+  <table id="table_content" border="1">
+   <thead>
+    <th>Name</th>
+    <th>Subject</th>
+    <th>Mark</th>
+   </thead>
+   <tbody>
+   </tbody>
+  </table>
+ </body>
+</html> 
