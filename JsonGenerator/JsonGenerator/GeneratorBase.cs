@@ -1,15 +1,20 @@
-﻿using System.Diagnostics;
+﻿using System;
 using System.IO;
+using System.Diagnostics;
 using System.Linq;
 
 namespace JsonGenerator
 {
-    class ProgramInitialization
+    abstract class GeneratorBase
     {
-        /// <summary>
-        /// Program initialization: checking directory path, index.html file transfer, delete the old json file, open index.html by "iexplore" process
-        /// </summary>
-        public static void Initialize()
+        public void Execute()
+        {
+            Initialize();
+            GenerateJson();
+            ConvertJsonToJs(@"C:\JsonGenerator\students.json", @"C:\JsonGenerator\students.js");
+        }
+
+        virtual public void Initialize()
         {
             if (!Directory.Exists(@"C:\JsonGenerator"))
                 Directory.CreateDirectory(@"C:\JsonGenerator");
@@ -28,6 +33,15 @@ namespace JsonGenerator
 
             if (!Process.GetProcessesByName("iexplore").Any())
                 Process.Start("iexplore.exe", @"C:\JsonGenerator\index.html");
+        }
+
+        abstract public void GenerateJson();
+
+        virtual public void ConvertJsonToJs(string jsonFile, string jsFile)
+        {
+            string json = File.ReadAllText(jsonFile);
+            string js = "var data = " + json;
+            File.WriteAllText(jsFile, js);
         }
     }
 }
