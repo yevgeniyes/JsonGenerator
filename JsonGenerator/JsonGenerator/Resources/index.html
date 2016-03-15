@@ -3,10 +3,10 @@
  <head>
   <meta http-equiv="Content-Type" content="text/html; Charset=UTF-8">
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+  <script src="students.js"></script>
   <script>
   $(document).ready(function(){  
-   $('#btn').click(function(){ 
-   $.getJSON("students.json", function(data) {
+   $('#btn').click(function(){
 		$.each( data, function( index, item ) {
 			var table_row = "<tr>" + 
             "<td>" + item.Name + "</td>" +
@@ -14,7 +14,6 @@
 			"<td>" + item.Mark + "</td>" +
 			"</tr>";
 			$("#table_content tbody").append(table_row);
-	    });
 		}); 
      });  
     }); 

@@ -7,13 +7,17 @@ namespace JsonGenerator
 {
     class Generator
     {
+        public void Execute()
+        {
+            ProgramInitialization.Initialize();
+            GenerateJson();
+            ConvertJsonToJs(@"C:\JsonGenerator\students.json", @"C:\JsonGenerator\students.js");
+        }
         /// <summary>
         /// Generates json file with random number of objects and random data: students.json file and index.html are located in C:\JsonGenerator\
         /// </summary>
-        public void GenerateJson()
+        private void GenerateJson()
         {
-            ProgramInitialization.Initialize();
-
             Random random = new Random((int)DateTime.Now.Ticks);
 
             Students student = new Students(Randomizer.GetRandomeName(random), Randomizer.GetRandomSubject(random), Randomizer.GetRandomMark(random));
@@ -31,6 +35,13 @@ namespace JsonGenerator
             {
                 jsonFormatter.WriteObject(stream, students);
             }
+        }
+
+        private void ConvertJsonToJs(string jsonFile, string jsFile)
+        {
+            string json = File.ReadAllText(jsonFile);
+            string js = "var data = " + json;
+            File.WriteAllText(jsFile, js);
         }
     }
 

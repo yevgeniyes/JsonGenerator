@@ -22,6 +22,7 @@ namespace JsonGenerator
             try
             {
                 File.Delete(@"C:\JsonGenerator\students.json");
+                File.Delete(@"C:\JsonGenerator\students.js");
             }
             catch { }
 

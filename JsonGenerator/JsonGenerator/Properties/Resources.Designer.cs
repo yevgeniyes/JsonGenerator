@@ -66,15 +66,16 @@ namespace JsonGenerator.Properties {
         /// &lt;head&gt;
         ///  &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; Charset=UTF-8&quot;&gt;
         ///  &lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js&quot;&gt;&lt;/script&gt;
+        ///  &lt;script src=&quot;students.js&quot;&gt;&lt;/script&gt;
         ///  &lt;script&gt;
         ///  $(document).ready(function(){  
-        ///   $(&apos;#btn&apos;).click(function(){ 
-        ///   $.getJSON(&quot;students.json&quot;, function(data) {
+        ///   $(&apos;#btn&apos;).click(function(){
         ///		$.each( data, function( index, item ) {
         ///			var table_row = &quot;&lt;tr&gt;&quot; + 
         ///            &quot;&lt;td&gt;&quot; + item.Name + &quot;&lt;/td&gt;&quot; +
         ///            &quot;&lt;td&gt;&quot; + item.Subject + &quot;&lt;/td&gt;&quot; +
-        ///			&quot;&lt;td&gt;&quot; + item.Mark + &quot;&lt;/t [rest of string was truncated]&quot;;.
+        ///			&quot;&lt;td&gt;&quot; + item.Mark + &quot;&lt;/td&gt;&quot; +
+        ///			 [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string index {
             get {

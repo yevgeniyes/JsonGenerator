@@ -11,7 +11,7 @@ namespace JsonGenerator
             {
                 Console.ReadKey();
                 Generator generator = new Generator();
-                generator.GenerateJson();
+                generator.Execute();
                 Console.WriteLine(@"C:\JsonGenerator\students.json was generated");
                 Console.Write("\nPress any key to generate JSON:");
             }
