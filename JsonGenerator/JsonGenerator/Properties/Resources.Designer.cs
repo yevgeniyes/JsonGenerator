@@ -68,14 +68,19 @@ namespace JsonGenerator.Properties {
         ///  &lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js&quot;&gt;&lt;/script&gt;
         ///  &lt;script src=&quot;students.js&quot;&gt;&lt;/script&gt;
         ///  &lt;script&gt;
-        ///  $(document).ready(function(){  
-        ///   $(&apos;#btn&apos;).click(function(){
-        ///		$.each( data, function( index, item ) {
-        ///			var table_row = &quot;&lt;tr&gt;&quot; + 
-        ///            &quot;&lt;td&gt;&quot; + item.Name + &quot;&lt;/td&gt;&quot; +
-        ///            &quot;&lt;td&gt;&quot; + item.Subject + &quot;&lt;/td&gt;&quot; +
-        ///			&quot;&lt;td&gt;&quot; + item.Mark + &quot;&lt;/td&gt;&quot; +
-        ///			 [rest of string was truncated]&quot;;.
+        ///  $(document).ready(function(){
+        ///	var list = [];
+        ///	list.push(data[0]);
+        ///  
+        ///  nextInput:
+        ///	for (var i = 0; i &lt; data.length; i++)
+        ///	{
+        ///		var student = data[i];
+        ///		for (var j = 0; j &lt; list.length; j++)
+        ///		{
+        ///			if (list[j].Name == student.Name) continue nextInput;
+        ///		}
+        /// [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string index {
             get {

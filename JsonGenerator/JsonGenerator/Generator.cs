@@ -23,8 +23,7 @@ namespace JsonGenerator
             Students student = new Students(Randomizer.GetRandomeName(random), Randomizer.GetRandomSubject(random), Randomizer.GetRandomMark(random));
             Students[] students = new Students[] { student };
 
-            int randomNumber = random.Next(10, 25);
-            for (int i = 1; i <= randomNumber; i++)
+            for (int i = 1; i <= 100; i++)
             {
                 Array.Resize(ref students, students.Length + 1);
                 students[students.Length - 1] = new Students(Randomizer.GetRandomeName(random), Randomizer.GetRandomSubject(random), Randomizer.GetRandomMark(random));

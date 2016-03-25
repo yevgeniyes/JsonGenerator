@@ -5,40 +5,66 @@
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
   <script src="students.js"></script>
   <script>
-  $(document).ready(function(){  
-   $('#btn').click(function(){
-		$.each( data, function( index, item ) {
-			var table_row = "<tr>" + 
-            "<td>" + item.Name + "</td>" +
-            "<td>" + item.Subject + "</td>" +
-			"<td>" + item.Mark + "</td>" +
-			"</tr>";
-			$("#table_content tbody").append(table_row);
-		}); 
-     });  
+  $(document).ready(function(){
+	var list = [];
+	list.push(data[0]);
+  
+  nextInput:
+	for (var i = 0; i < data.length; i++)
+	{
+		var student = data[i];
+		for (var j = 0; j < list.length; j++)
+		{
+			if (list[j].Name == student.Name) continue nextInput;
+		}
+		list.push(student);
+	}
+	alert(list.length + " data objects was found");
+  
+	var table = document.createElement("TABLE");
+	table.border=1
+    document.body.appendChild(table);
+	
+		var tableHeaderCreated = false;
+		
+		for (var i = 0; i < list.length; i++)
+		{
+			if (!tableHeaderCreated)
+			{
+				var newRow=table.insertRow(i);
+				var newCell = newRow.insertCell(0);
+				newCell.innerHTML = "Name\\Subject";
+				
+					for (var j = 0; j < list.length; j++)
+						{
+							var newCell = newRow.insertCell(-1);
+							newCell.innerText = list[j].Subject;		
+						}
+						
+				tableHeaderCreated = true;
+			}
+			
+		var newRow=table.insertRow(i + 1);
+		var newCell = newRow.insertCell(0);
+		newCell.innerHTML = list[i].Name;
+
+		var studentName = list[i].Name;
+		var studentSubject = list[i].Subject;
+		
+			for (var q = 0; q < list.length; q++)
+			{
+				var newCell = newRow.insertCell(-1);
+				
+				if (list[q].Name == studentName && list[q].Subject == studentSubject)
+				{
+					newCell.innerText = list[q].Mark;
+				}
+			}
+		} 
     }); 
   </script>
-  <style>
-   #table_content
-   {
-   background-color:#00CCFF;
-   color:#000000;
-   }
-  </style>
  </head>
  <body>
-  <p>Test page for testing JsonGenerator</p>  
-  <form>  
-   <input id="btn" type="button" value="Click to get json">    
-  </form>
-  <table id="table_content" border="1">
-   <thead>
-    <th>Name</th>
-    <th>Subject</th>
-    <th>Mark</th>
-   </thead>
-   <tbody>
-   </tbody>
-  </table>
+  <p>Test page for JsonGenerator</p>  
  </body>
 </html> 
