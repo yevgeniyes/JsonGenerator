@@ -5,18 +5,12 @@ using System.Runtime.Serialization.Json;
 
 namespace JsonGenerator
 {
-    class Generator
+    class StudentsGenerator : GeneratorBase
     {
-        public void Execute()
-        {
-            ProgramInitialization.Initialize();
-            GenerateJson();
-            ConvertJsonToJs(@"C:\JsonGenerator\students.json", @"C:\JsonGenerator\students.js");
-        }
         /// <summary>
         /// Generates json file with random number of objects and random data: students.json file and index.html are located in C:\JsonGenerator\
         /// </summary>
-        private void GenerateJson()
+        override public void GenerateJson()
         {
             Random random = new Random((int)DateTime.Now.Ticks);
 
@@ -34,13 +28,6 @@ namespace JsonGenerator
             {
                 jsonFormatter.WriteObject(stream, students);
             }
-        }
-
-        private void ConvertJsonToJs(string jsonFile, string jsFile)
-        {
-            string json = File.ReadAllText(jsonFile);
-            string js = "var data = " + json;
-            File.WriteAllText(jsFile, js);
         }
     }
 
