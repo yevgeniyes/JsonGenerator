@@ -1,44 +1,95 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
- <head>
-  <meta http-equiv="Content-Type" content="text/html; Charset=UTF-8">
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-  <script src="students.js"></script>
-  <script>
-  $(document).ready(function(){  
-   $('#btn').click(function(){
-		$.each( data, function( index, item ) {
-			var table_row = "<tr>" + 
-            "<td>" + item.Name + "</td>" +
-            "<td>" + item.Subject + "</td>" +
-			"<td>" + item.Mark + "</td>" +
-			"</tr>";
-			$("#table_content tbody").append(table_row);
-		}); 
-     });  
-    }); 
-  </script>
-  <style>
-   #table_content
-   {
-   background-color:#00CCFF;
-   color:#000000;
-   }
-  </style>
- </head>
- <body>
-  <p>Test page for testing JsonGenerator</p>  
-  <form>  
-   <input id="btn" type="button" value="Click to get json">    
-  </form>
-  <table id="table_content" border="1">
-   <thead>
-    <th>Name</th>
-    <th>Subject</th>
-    <th>Mark</th>
-   </thead>
-   <tbody>
-   </tbody>
-  </table>
- </body>
-</html> 
+<head>
+    <meta http-equiv="Content-Type" content="text/html; Charset=UTF-8">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script src="students.js"></script>
+    <script>
+        //Sorting data in new array "students" before creating table
+        $(document).ready(function () {
+            var students = [];
+            for (var i = 0; i < data.length; i++) {
+                var line = data[i];
+                var student = GetStudentByName(students, line.Name);
+                if (student == false) {
+                    student = { Name: line.Name, Subjects: [] };
+                    students.push(student);
+                }
+                var subject = GetSubjectsByName(student.Subjects, line.Subject);
+                if (subject == false) {
+                    subject = { Name: line.Subject, Marks: [], Average: 0 };
+                    student.Subjects.push(subject);
+                }
+                subject.Marks.push(line.Mark);
+            }
+            for (var i = 0; i < students.length; i++) {
+                for (var j = 0; j < students[i].Subjects.length; j++) {
+                    CalcAvgMark(students[i].Subjects[j]);
+                }
+            }
+
+            //Check for the presence student with current "name" in "students" array
+            function GetStudentByName(students, name) {
+                for (var i = 0; i < students.length; i++) {
+                    if (students[i].Name == name)
+                        return students[i];
+                }
+                return false;
+            }
+            //Check for the presence subject with current "name" in "student.Subjects" array
+            function GetSubjectsByName(subjects, name) {
+                for (var i = 0; i < subjects.length; i++) {
+                    if (subjects[i].Name == name)
+                        return subjects[i];
+                }
+                return false;
+            }
+            //Calculation of the average mark (integer)
+            function CalcAvgMark(subject) {
+                var sum = 0;
+                for (var i = 0; i < subject.Marks.length; i++) {
+                    sum = sum + subject.Marks[i];
+                }
+                subject.Average = (sum - sum % subject.Marks.length) / subject.Marks.length;
+            }
+
+            //Table creating
+            var table = document.createElement("TABLE");
+            table.border = 1;
+            document.body.appendChild(table);
+            //Table Header creating
+            var newRow = table.insertRow(0);
+            var newCell = newRow.insertCell(0);
+            newCell.innerHTML = "Name\\Subject";
+
+            var subjectsList = ["Mathematics", "Geometry", "Russian", "English", "Physical Education", "Music", "History", "Geography", "Social Studies", "Physics", "Literature", "Chemistry", "Philosophy", "Computer science", "Biology", "Nature study", "Economy", "Oratory", "Painting", "Life Safety Fundamentals"];
+            subjectsList.sort();
+
+            for (var i = 0; i < subjectsList.length; i++) {
+                var newCell = newRow.insertCell(-1);
+                newCell.innerText = subjectsList[i];
+            }
+            //Table Rows creating
+            for (var i = 0; i < students.length; i++) {
+                var newRow = table.insertRow(i + 1);
+                var newCell = newRow.insertCell(0);
+                newCell.innerHTML = students[i].Name;
+
+                for (var j = 0; j < subjectsList.length; j++) {
+                    var newCell = newRow.insertCell(-1);
+                    var subjectFromList = subjectsList[j];
+
+                    for (var k = 0; k < students[i].Subjects.length; k++) {
+                        if (students[i].Subjects[k].Name == subjectFromList)
+                            newCell.innerHTML = students[i].Subjects[k].Average;
+                    }
+                }
+            }
+
+        });
+    </script>
+</head>
+<body>
+    <p>Test page for JsonGenerator</p>
+</body>
+</html>
