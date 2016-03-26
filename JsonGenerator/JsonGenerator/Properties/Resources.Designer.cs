@@ -63,20 +63,17 @@ namespace JsonGenerator.Properties {
         /// <summary>
         ///   Ищет локализованную строку, похожую на &lt;!DOCTYPE html&gt;
         ///&lt;html&gt;
-        /// &lt;head&gt;
-        ///  &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; Charset=UTF-8&quot;&gt;
-        ///  &lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js&quot;&gt;&lt;/script&gt;
-        ///  &lt;script src=&quot;students.js&quot;&gt;&lt;/script&gt;
-        ///  &lt;script&gt;
-        ///  //Sorting data in new array &quot;students&quot; before creating table
-        ///  $(document).ready(function(){
-        ///	var students = [];
-        ///	for (var i = 0; i &lt; data.length; i++)
-        ///		{
-        ///			var line = data[i];
-        ///			var student = GetStudentByName(students, line.Name);
-        ///			if(student == false)
-        /// [остаток строки не уместился]&quot;;.
+        ///&lt;head&gt;
+        ///    &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; Charset=UTF-8&quot;&gt;
+        ///    &lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js&quot;&gt;&lt;/script&gt;
+        ///    &lt;script src=&quot;students.js&quot;&gt;&lt;/script&gt;
+        ///    &lt;script&gt;
+        ///        //Sorting data in new array &quot;students&quot; before creating table
+        ///        $(document).ready(function () {
+        ///            var students = [];
+        ///            for (var i = 0; i &lt; data.length; i++) {
+        ///                var line = data[i];
+        ///                var student = [остаток строки не уместился]&quot;;.
         /// </summary>
         internal static string index {
             get {
