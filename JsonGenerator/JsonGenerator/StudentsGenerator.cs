@@ -2,6 +2,7 @@
 using System.Runtime.Serialization;
 using System.IO;
 using System.Runtime.Serialization.Json;
+using System.Collections.Generic;
 
 namespace JsonGenerator
 {
@@ -14,16 +15,14 @@ namespace JsonGenerator
         {
             Random random = new Random((int)DateTime.Now.Ticks);
 
-            Students student = new Students(Randomizer.GetRandomeName(random), Randomizer.GetRandomSubject(random), Randomizer.GetRandomMark(random));
-            Students[] students = new Students[] { student };
+            List<Students> students = new List<Students>();
 
             for (int i = 1; i <= 500; i++)
             {
-                Array.Resize(ref students, students.Length + 1);
-                students[students.Length - 1] = new Students(Randomizer.GetRandomeName(random), Randomizer.GetRandomSubject(random), Randomizer.GetRandomMark(random));
+                students.Add(new Students(Randomizer.GetRandomeName(random), Randomizer.GetRandomSubject(random), Randomizer.GetRandomMark(random)));
             }
 
-            DataContractJsonSerializer jsonFormatter = new DataContractJsonSerializer(typeof(Students[]));
+            DataContractJsonSerializer jsonFormatter = new DataContractJsonSerializer(typeof(List<Students>));
             using (FileStream stream = new FileStream(@"C:\JsonGenerator\students.json", FileMode.OpenOrCreate))
             {
                 jsonFormatter.WriteObject(stream, students);
