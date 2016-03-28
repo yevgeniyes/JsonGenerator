@@ -5,8 +5,32 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script src="students.js"></script>
     <script>
-        //Sorting data in new array "students" before creating table
-        $(document).ready(function () {
+        //Check for the presence student with current "name" in "students" array
+        function GetStudentByName(students, name) {
+            for (var i = 0; i < students.length; i++) {
+                if (students[i].Name == name)
+                    return students[i];
+            }
+            return false;
+        }
+        //Check for the presence subject with current "name" in "student.Subjects" array
+        function GetSubjectsByName(subjects, name) {
+            for (var i = 0; i < subjects.length; i++) {
+                if (subjects[i].Name == name)
+                    return subjects[i];
+            }
+            return false;
+        }
+        //Calculation of the average mark (integer)
+        function CalcAvgMark(subject) {
+            var sum = 0;
+            for (var i = 0; i < subject.Marks.length; i++) {
+                sum = sum + subject.Marks[i];
+            }
+            subject.Average = (sum / subject.Marks.length).toFixed(2);
+        }
+        //Creating data model
+        function CreateModel() {
             var students = [];
             for (var i = 0; i < data.length; i++) {
                 var line = data[i];
@@ -27,33 +51,7 @@
                     CalcAvgMark(students[i].Subjects[j]);
                 }
             }
-
-            //Check for the presence student with current "name" in "students" array
-            function GetStudentByName(students, name) {
-                for (var i = 0; i < students.length; i++) {
-                    if (students[i].Name == name)
-                        return students[i];
-                }
-                return false;
-            }
-            //Check for the presence subject with current "name" in "student.Subjects" array
-            function GetSubjectsByName(subjects, name) {
-                for (var i = 0; i < subjects.length; i++) {
-                    if (subjects[i].Name == name)
-                        return subjects[i];
-                }
-                return false;
-            }
-            //Calculation of the average mark (integer)
-            function CalcAvgMark(subject) {
-                var sum = 0;
-                for (var i = 0; i < subject.Marks.length; i++) {
-                    sum = sum + subject.Marks[i];
-                }
-                subject.Average = (sum - sum % subject.Marks.length) / subject.Marks.length;
-            }
-
-            //Sorting "students" array by alphabet
+            //Sorting objects in data model by alphabet
             students.sort(function (a, b) {
                 if (a.Name > b.Name) {
                     return 1;
@@ -63,8 +61,32 @@
                 }
                 return 0;
             });
+            return students;
+        }
+        //Get subjects list
+        function GetSubjectsList(students) {
+            var subjectsList = [];
+            for (var i = 0; i < students.length; i++) {
+                if (subjectsList.length == 0) {
+                    subjectsList.push(students[i].Subjects[i].Name);
+                    continue;
+                }
+                for (var j = 0; j < students[i].Subjects.length; j++) {
+                    var subjectExists = false;
+                    for (var k = 0; k < subjectsList.length; k++) {
+                        if (students[i].Subjects[j].Name == subjectsList[k]) {
+                            subjectExists = true;
+                            continue;
+                        }
+                    }
+                    if (!subjectExists) subjectsList.push(students[i].Subjects[j].Name);
+                }
+            }
+            return subjectsList;
+        }
 
-            //Table creating
+        //Creating table based on data model
+        function CreateTable(students) {
             var table = document.createElement("TABLE");
             table.border = 1;
             document.body.appendChild(table);
@@ -73,7 +95,7 @@
             var newCell = newRow.insertCell(0);
             newCell.innerHTML = "Name\\Subject";
 
-            var subjectsList = ["Mathematics", "Geometry", "Russian", "English", "Physical Education", "Music", "History", "Geography", "Social Studies", "Physics", "Literature", "Chemistry", "Philosophy", "Computer science", "Biology", "Nature study", "Economy", "Oratory", "Painting", "Life Safety Fundamentals"];
+            var subjectsList = GetSubjectsList(students);
             subjectsList.sort();
 
             for (var i = 0; i < subjectsList.length; i++) {
@@ -96,7 +118,11 @@
                     }
                 }
             }
-
+        }
+        //Main function
+        $(document).ready(function () {
+            var model = CreateModel();
+            CreateTable(model);
         });
     </script>
 </head>
