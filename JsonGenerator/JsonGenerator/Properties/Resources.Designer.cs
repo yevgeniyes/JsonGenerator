@@ -65,18 +65,16 @@ namespace JsonGenerator.Properties {
         ///&lt;html&gt;
         ///&lt;head&gt;
         ///    &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; Charset=UTF-8&quot;&gt;
+        ///	&lt;style&gt;
+        ///		tr {font-size: 110%; font-weight: normal; text-align: center;}
+        ///		td {background: #c2c2c2;}
+        ///	&lt;/style&gt;
         ///    &lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js&quot;&gt;&lt;/script&gt;
         ///    &lt;script src=&quot;students.js&quot;&gt;&lt;/script&gt;
         ///    &lt;script&gt;
-        ///		//Check for the presence student with current &quot;name&quot; in &quot;students&quot; array
-        ///		function GetStudentByName(students, name) {
-        ///			for (var i = 0; i &lt; students.length; i++) {
-        ///				if (students[i].Name == name)
-        ///					return students[i];
-        ///			}
-        ///			return false;
-        ///		}
-        ///	 [остаток строки не уместился]&quot;;.
+        ///        //Check for the presence student with current &quot;name&quot; in &quot;students&quot; array
+        ///        function getStudentByName(students, name) {
+        ///            [остаток строки не уместился]&quot;;.
         /// </summary>
         internal static string index {
             get {

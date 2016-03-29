@@ -2,53 +2,66 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; Charset=UTF-8">
+    <style>
+        tr {
+            font-size: 110%;
+            font-weight: normal;
+            text-align: center;
+        }
+
+        td {
+            background: #c2c2c2;
+        }
+    </style>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script src="students.js"></script>
     <script>
         //Check for the presence student with current "name" in "students" array
-        function GetStudentByName(students, name) {
+        function getStudentByName(students, name) {
             for (var i = 0; i < students.length; i++) {
                 if (students[i].Name == name)
                     return students[i];
             }
-            return false;
+            return null;
         }
         //Check for the presence subject with current "name" in "student.Subjects" array
-        function GetSubjectsByName(subjects, name) {
+        function getSubjectsByName(subjects, name) {
             for (var i = 0; i < subjects.length; i++) {
                 if (subjects[i].Name == name)
                     return subjects[i];
             }
-            return false;
+            return null;
         }
         //Calculation of the average mark (integer)
-        function CalcAvgMark(subject) {
-            var sum = 0;
+        function calcAvgMark(subject) {
+            var sum = null;
             for (var i = 0; i < subject.Marks.length; i++) {
                 sum = sum + subject.Marks[i];
             }
-            subject.Average = (sum / subject.Marks.length).toFixed(2);
+            if (sum != null)
+                subject.Average = (sum - sum % subject.Marks.length) / subject.Marks.length;
         }
         //Creating data model
-        function CreateModel() {
+        function createModel() {
             var students = [];
             for (var i = 0; i < data.length; i++) {
                 var line = data[i];
-                var student = GetStudentByName(students, line.Name);
-                if (student == false) {
+                var student = getStudentByName(students, line.Name);
+                if (student == null) {
                     student = { Name: line.Name, Subjects: [] };
                     students.push(student);
                 }
-                var subject = GetSubjectsByName(student.Subjects, line.Subject);
-                if (subject == false) {
-                    subject = { Name: line.Subject, Marks: [], Average: 0 };
+                var subject = getSubjectsByName(student.Subjects, line.Subject);
+                if (subject == null) {
+                    subject = { Name: line.Subject, Marks: [], Average: null };
                     student.Subjects.push(subject);
                 }
                 subject.Marks.push(line.Mark);
             }
             for (var i = 0; i < students.length; i++) {
-                for (var j = 0; j < students[i].Subjects.length; j++) {
-                    CalcAvgMark(students[i].Subjects[j]);
+                var studentI = students[i];
+                for (var j = 0; j < studentI.Subjects.length; j++) {
+                    calcAvgMark(studentI.Subjects[j]);
                 }
             }
             //Sorting objects in data model by alphabet
@@ -64,69 +77,87 @@
             return students;
         }
         //Get subjects list
-        function GetSubjectsList(students) {
+        function getSubjectsList(students) {
             var subjectsList = [];
             for (var i = 0; i < students.length; i++) {
                 if (subjectsList.length == 0) {
                     subjectsList.push(students[i].Subjects[i].Name);
                     continue;
                 }
-                for (var j = 0; j < students[i].Subjects.length; j++) {
+                var studentI = students[i];
+                for (var j = 0; j < studentI.Subjects.length; j++) {
                     var subjectExists = false;
+                    var subjectJ = studentI.Subjects[j];
                     for (var k = 0; k < subjectsList.length; k++) {
-                        if (students[i].Subjects[j].Name == subjectsList[k]) {
+                        if (subjectJ.Name == subjectsList[k]) {
                             subjectExists = true;
                             continue;
                         }
                     }
-                    if (!subjectExists) subjectsList.push(students[i].Subjects[j].Name);
+                    if (!subjectExists) subjectsList.push(subjectJ.Name);
                 }
             }
             return subjectsList;
         }
 
         //Creating table based on data model
-        function CreateTable(students) {
+        function createTable(students) {
             var table = document.createElement("TABLE");
-            table.border = 1;
+            table.border = 0;
             document.body.appendChild(table);
             //Table Header creating
             var newRow = table.insertRow(0);
             var newCell = newRow.insertCell(0);
-            newCell.innerHTML = "Name\\Subject";
+            newCell.style['background'] = 'transparent';
 
-            var subjectsList = GetSubjectsList(students);
+            var subjectsList = getSubjectsList(students);
             subjectsList.sort();
 
             for (var i = 0; i < subjectsList.length; i++) {
                 var newCell = newRow.insertCell(-1);
                 newCell.innerText = subjectsList[i];
+                newCell.style['font-weight'] = '900';
             }
             //Table Rows creating
             for (var i = 0; i < students.length; i++) {
                 var newRow = table.insertRow(i + 1);
                 var newCell = newRow.insertCell(0);
                 newCell.innerHTML = students[i].Name;
+                newCell.style['font-weight'] = '900';
 
                 for (var j = 0; j < subjectsList.length; j++) {
                     var newCell = newRow.insertCell(-1);
                     var subjectFromList = subjectsList[j];
 
                     for (var k = 0; k < students[i].Subjects.length; k++) {
-                        if (students[i].Subjects[k].Name == subjectFromList)
-                            newCell.innerHTML = students[i].Subjects[k].Average;
+                        var studentK = students[i].Subjects[k]
+                        if (studentK.Name == subjectFromList && studentK.Average != null) {
+                            newCell.style['font-size'] = '130%';
+                            newCell.innerHTML = studentK.Average;
+
+                            switch (studentK.Average) {
+                                case 5: newCell.style['background'] = '#3dd445';
+                                    break;
+                                case 4: newCell.style['background'] = '#afeb49';
+                                    break;
+                                case 3: newCell.style['background'] = '#edd861';
+                                    break;
+                                case 2: newCell.style['background'] = '#f27d66';
+                                    break;
+                            }
+                        }
+
                     }
                 }
             }
         }
         //Main function
         $(document).ready(function () {
-            var model = CreateModel();
-            CreateTable(model);
+            var model = createModel();
+            createTable(model);
         });
     </script>
 </head>
 <body>
-    <p>Test page for JsonGenerator</p>
 </body>
 </html>
