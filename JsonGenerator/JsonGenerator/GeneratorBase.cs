@@ -18,9 +18,10 @@ namespace JsonGenerator
             if (!Directory.Exists(@"C:\JsonGenerator"))
                 Directory.CreateDirectory(@"C:\JsonGenerator");
 
-            if (!File.Exists(@"C:\JsonGenerator\index.html"))
+            if (!File.Exists(@"C:\JsonGenerator\index.html") || !File.Exists(@"C:\JsonGenerator\index1.html"))
             {
                 File.WriteAllText(@"C:\JsonGenerator\index.html", Properties.Resources.index);
+                File.WriteAllText(@"C:\JsonGenerator\index1.html", Properties.Resources.index1);
             }
 
             try

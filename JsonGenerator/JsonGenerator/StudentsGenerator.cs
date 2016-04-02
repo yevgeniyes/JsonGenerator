@@ -17,7 +17,7 @@ namespace JsonGenerator
 
             List<Students> students = new List<Students>();
 
-            for (int i = 1; i <= 700; i++)
+            for (int i = 1; i <= 500; i++)
             {
                 students.Add(new Students(Randomizer.GetRandomeName(random), Randomizer.GetRandomSubject(random), Randomizer.GetRandomMark(random)));
             }

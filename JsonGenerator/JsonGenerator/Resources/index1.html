@@ -1,8 +1,8 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; Charset=UTF-8">
-    <title>Table with average marks</title>
+    <title>Diagram of total marks sum</title>
     <style>
         table {
             table-layout: fixed;
@@ -11,27 +11,6 @@
         tr {
             font-size: 115%;
             font-weight: normal;
-            text-align: center;
-        }
-
-        td {
-            background: #c2c2c2;
-        }
-
-        .good {
-            background: #3dd445;
-        }
-
-        .normal {
-            background: #afeb49;
-        }
-
-        .low {
-            background: #edd861;
-        }
-
-        .bad {
-            background: #f27d66;
         }
     </style>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
@@ -71,7 +50,6 @@
             if (score != null)
                 students.TotalScore = score.toFixed(1);
         }
-
         //Creating data model
         function createModel() {
             var students = [];
@@ -109,7 +87,6 @@
 
             return students;
         }
-
         //Get subjects list
         function getSubjectsList(students) {
             var subjectsList = [];
@@ -136,58 +113,56 @@
 
         //Creating table based on data model
         function createTable(students) {
-            //Subjects list used to build header and make equal column width
+            //Subjects list used to calculate width constant
             var subjectsList = getSubjectsList(students);
-            subjectsList.sort();
-
+            var colors = ["#c70000", "#d41111", "#f51b22", "#f27d66", "#edf761", "#f2d166", "#afdf49", "#afc249", "#3dbd45", "#3dab45"];
             var table = document.createElement("TABLE");
             table.border = 0;
-            table.width = subjectsList.length * 125;
+            table.width = 650;
             document.body.appendChild(table);
-            //Table Header creating
-            var newRow = table.insertRow(0);
-            var newCell = newRow.insertCell(0);
-            newCell.style['background'] = 'transparent';
 
-            for (var i = 0; i < subjectsList.length; i++) {
-                var newCell = newRow.insertCell(-1);
-                newCell.innerText = subjectsList[i];
-                newCell.style['font-weight'] = '900';
-            }
             //Table Rows creating
             for (var i = 0; i < students.length; i++) {
-                var newRow = table.insertRow(i + 1);
+                var newRow = table.insertRow(i);
                 var newCell = newRow.insertCell(0);
-                newCell.innerHTML = students[i].Name;
+                newCell.style['background'] = '#c2c2c2';
                 newCell.style['font-weight'] = '900';
-
-                for (var j = 0; j < subjectsList.length; j++) {
-                    var newCell = newRow.insertCell(-1);
-                    var subjectFromList = subjectsList[j];
-
-                    for (var k = 0; k < students[i].Subjects.length; k++) {
-                        var studentK = students[i].Subjects[k]
-                        if (studentK.Name == subjectFromList && studentK.Average != null) {
-                            newCell.style['font-size'] = '120%';
-
-                            if (studentK.Average.charAt(studentK.Average.length - 1) == "0") {
-                                studentK.Average = studentK.Average.substring(0, 1);
-                            }
-                            newCell.innerHTML = studentK.Average;
-
-                            switch (studentK.Average.charAt(0)) {
-                                case "5": newCell.setAttribute("class", "good");
-                                    break;
-                                case "4": newCell.setAttribute("class", "normal");
-                                    break;
-                                case "3": newCell.setAttribute("class", "low");
-                                    break;
-                                case "2": newCell.setAttribute("class", "bad");
-                                    break;
-                            }
-                        }
-                    }
+                newCell.style['text-align'] = 'center';
+                newCell.innerText = students[i].Name;
+                //Cell and div creating
+                var newCell = newRow.insertCell(-1);
+                newCell.width = "82%";
+                var div = document.createElement('div');
+                var score = students[i].TotalScore;
+                var studentScore = parseFloat(score);
+                var constant = (studentScore / subjectsList.length);
+                //Selecting score line color based on width constant
+                var lineColor;
+                if (constant <= 2.2) lineColor = colors[0];
+                if (constant > 2.2 && constant <= 2.5) lineColor = colors[1];
+                if (constant > 2.5 && constant <= 2.7) lineColor = colors[2];
+                if (constant > 2.7 && constant <= 3) lineColor = colors[3];
+                if (constant > 3 && constant <= 3.2) lineColor = colors[4];
+                if (constant > 3.2 && constant <= 3.5) lineColor = colors[5];
+                if (constant > 3.5 && constant <= 3.8) lineColor = colors[6];
+                if (constant > 3.8 && constant <= 4) lineColor = colors[7];
+                if (constant > 4 && constant <= 4.5) lineColor = colors[8];
+                if (constant > 4.5) lineColor = colors[9];
+                //Width calculation. Applying width and color
+                var scoreLineWidth = studentScore * constant;
+                var width = scoreLineWidth + "px";
+                var widthForScoreShow = (scoreLineWidth + 5) + "px";
+                div.style.width = width;
+                div.style.height = "18px";
+                div.style.background = lineColor;
+                div.style['vertical-align'] = 'top';
+                div.style['text-indent'] = widthForScoreShow;
+                //Remove .0
+                if (score.charAt(score.length - 1) == "0") {
+                    score = score.substring(0, score.length - 2);
                 }
+                div.innerText = score;
+                newCell.appendChild(div);
             }
         }
         //Main function
@@ -198,9 +173,9 @@
     </script>
 </head>
 <body>
-    <form action="index1.html">
-        <p>Click button to view: <button type="submit">Diagram of total marks sum</button></p>
+    <form action="index.html">
+        <p>Click button to view: <button type="submit">Table with average marks</button></p>
     </form>
-    <h1>Table with average marks</h1>
+    <h1>Diagram of total marks sum</h1>
 </body>
 </html>
