@@ -10,92 +10,24 @@
 
         tr {
             font-size: 115%;
-            font-weight: normal;
         }
 
-        .color100 {
-            background: #3dab45;
+        .name {
+            width: 20%;
+            background: #c2c2c2;
+            font-weight: 900;
+            text-align: center;
         }
 
-        .color95 {
-            background: #3dbd45;
-        }
-
-        .color90 {
-            background: #3dcd45;
-        }
-
-        .color85 {
-            background: #3dd545;
-        }
-
-        .color80 {
-            background: #3ddc45;
-        }
-
-        .color75 {
-            background: #3de345;
-        }
-
-        .color70 {
-            background: #3de545;
-        }
-
-        .color65 {
-            background: #3df445;
-        }
-
-        .color60 {
-            background: #73f445;
-        }
-
-        .color55 {
-            background: #a7f445;
-        }
-
-        .color50 {
-            background: #ebf045;
-        }
-
-        .color45 {
-            background: #eb8b45;
-        }
-
-        .color40 {
-            background: #eb7745;
-        }
-
-        .color35 {
-            background: #eb6545;
-        }
-
-        .color30 {
-            background: #eb5045;
-        }
-
-        .color25 {
-            background: #eb3645;
-        }
-
-        .color20 {
-            background: #eb3632;
-        }
-
-        .color15 {
-            background: #eb361a;
-        }
-
-        .color10 {
-            background: #eb1a1a;
-        }
-
-        .color5 {
-            background: #eb0000;
+        .line {
+            height: 18px;
         }
     </style>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script src="students.js"></script>
     <script>
+        //Colors from Red to Green
+        var colors = ["#eb0000", "#eb1a1a", "#eb361a", "#eb3632", "#eb3645", "#eb5045", "#eb6545", "#eb7745", "#eb8b45", "#ebf045", "#a7f445", "#73f445", "#3df445", "#3de545", "#3de345", "#3ddc45", "#3dd545", "#3dcd45", "#3dbd45", "#3dab45"];
         //Check for the presence student with current "name" in "students" array
         function getStudentByName(students, name) {
             for (var i = 0; i < students.length; i++) {
@@ -154,13 +86,13 @@
                 }
                 calcTotalScore(studentI);
             }
-            //Sorting objects in data model by alphabet
+            //Sorting objects in data model by max score
             students.sort(function (a, b) {
-                if (a.Name > b.Name) {
-                    return 1;
-                }
-                if (a.Name < b.Name) {
+                if (parseFloat(a.TotalScore) > parseFloat(b.TotalScore)) {
                     return -1;
+                }
+                if (parseFloat(a.TotalScore) < parseFloat(b.TotalScore)) {
+                    return 1;
                 }
                 return 0;
             });
@@ -190,7 +122,7 @@
             }
             return subjectsList;
         }
-        //Get color based on percent difference between max Width and current width of score Line. Step can be easily changed
+        //Get color based on percent difference between max score and current score.
         function getColor(difference, div) {
             var percent = 100;
             var step = 5;
@@ -199,7 +131,8 @@
                 percent = percent - step;
                 if (difference >= percent && difference <= percent + step) {
                     var color = "color" + (constantPercent - percent);
-                    div.setAttribute("class", color);
+                    div.style.background = colors[i];
+                    //alert(color);
                     break;
                 }
             }
@@ -213,30 +146,36 @@
             table.width = 650;
             document.body.appendChild(table);
             //Constants to calculate current score line width
-            var maxWidth = 400;
+            var maxWidth = 300;
             var maxScore = subjectsList.length * 5;
             //Table Rows creating
             for (var i = 0; i < students.length; i++) {
                 var newRow = table.insertRow(i);
                 var newCell = newRow.insertCell(0);
-                newCell.width = "20%";
-                newCell.style['background'] = '#c2c2c2';
-                newCell.style['font-weight'] = '900';
-                newCell.style['text-align'] = 'center';
+                newCell.setAttribute("class", "name");
                 newCell.innerText = students[i].Name;
+
                 //Cell and div creating
                 var newCell = newRow.insertCell(-1);
                 var div = document.createElement('div');
+                div.setAttribute("class", "line");
+
                 var score = students[i].TotalScore;
                 var studentScore = parseFloat(score);
-                var scoreLineWidth = (maxWidth * studentScore) / maxScore;
+                var maxStudentScore = students[0].TotalScore;
+                var scoreLineWidth;
+                if (i == 0) {
+                    scoreLineWidth = maxWidth;
+                }
+                else {
+                    scoreLineWidth = (maxWidth * studentScore) / maxStudentScore;
+                }
                 var width = scoreLineWidth + "px";
                 var widthForScoreShow = (scoreLineWidth + 5) + "px";
                 div.style.width = width;
-                div.style.height = "18px";
                 div.style['text-indent'] = widthForScoreShow;
-                //Calculate width percent and get score line color
-                var difference = 100 - ((scoreLineWidth / maxWidth) * 100);
+                //Calculate score difference percent and get score line color
+                var difference = 100 - ((studentScore / maxScore) * 100);
                 getColor(difference, div);
                 //Remove .0 from score
                 if (score.charAt(score.length - 1) == "0") {
