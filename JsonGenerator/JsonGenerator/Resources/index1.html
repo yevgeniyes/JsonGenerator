@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; Charset=UTF-8">
@@ -11,6 +11,86 @@
         tr {
             font-size: 115%;
             font-weight: normal;
+        }
+
+        .color100 {
+            background: #3dab45;
+        }
+
+        .color95 {
+            background: #3dbd45;
+        }
+
+        .color90 {
+            background: #3dcd45;
+        }
+
+        .color85 {
+            background: #3dd545;
+        }
+
+        .color80 {
+            background: #3ddc45;
+        }
+
+        .color75 {
+            background: #3de345;
+        }
+
+        .color70 {
+            background: #3de545;
+        }
+
+        .color65 {
+            background: #3df445;
+        }
+
+        .color60 {
+            background: #73f445;
+        }
+
+        .color55 {
+            background: #a7f445;
+        }
+
+        .color50 {
+            background: #ebf045;
+        }
+
+        .color45 {
+            background: #eb8b45;
+        }
+
+        .color40 {
+            background: #eb7745;
+        }
+
+        .color35 {
+            background: #eb6545;
+        }
+
+        .color30 {
+            background: #eb5045;
+        }
+
+        .color25 {
+            background: #eb3645;
+        }
+
+        .color20 {
+            background: #eb3632;
+        }
+
+        .color15 {
+            background: #eb361a;
+        }
+
+        .color10 {
+            background: #eb1a1a;
+        }
+
+        .color5 {
+            background: #eb0000;
         }
     </style>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
@@ -110,54 +190,55 @@
             }
             return subjectsList;
         }
-
+        //Get color based on percent difference between max Width and current width of score Line. Step can be easily changed
+        function getColor(difference, div) {
+            var percent = 100;
+            var step = 5;
+            var constantPercent = percent;
+            for (var i = 0; i < constantPercent / step; i++) {
+                percent = percent - step;
+                if (difference >= percent && difference <= percent + step) {
+                    var color = "color" + (constantPercent - percent);
+                    div.setAttribute("class", color);
+                    break;
+                }
+            }
+        }
         //Creating table based on data model
         function createTable(students) {
             //Subjects list used to calculate width constant
             var subjectsList = getSubjectsList(students);
-            var colors = ["#c70000", "#d41111", "#f51b22", "#f27d66", "#edf761", "#f2d166", "#afdf49", "#afc249", "#3dbd45", "#3dab45"];
             var table = document.createElement("TABLE");
             table.border = 0;
             table.width = 650;
             document.body.appendChild(table);
-
+            //Constants to calculate current score line width
+            var maxWidth = 400;
+            var maxScore = subjectsList.length * 5;
             //Table Rows creating
             for (var i = 0; i < students.length; i++) {
                 var newRow = table.insertRow(i);
                 var newCell = newRow.insertCell(0);
+                newCell.width = "20%";
                 newCell.style['background'] = '#c2c2c2';
                 newCell.style['font-weight'] = '900';
                 newCell.style['text-align'] = 'center';
                 newCell.innerText = students[i].Name;
                 //Cell and div creating
                 var newCell = newRow.insertCell(-1);
-                newCell.width = "82%";
                 var div = document.createElement('div');
                 var score = students[i].TotalScore;
                 var studentScore = parseFloat(score);
-                var constant = (studentScore / subjectsList.length);
-                //Selecting score line color based on width constant
-                var lineColor;
-                if (constant <= 2.2) lineColor = colors[0];
-                if (constant > 2.2 && constant <= 2.5) lineColor = colors[1];
-                if (constant > 2.5 && constant <= 2.7) lineColor = colors[2];
-                if (constant > 2.7 && constant <= 3) lineColor = colors[3];
-                if (constant > 3 && constant <= 3.2) lineColor = colors[4];
-                if (constant > 3.2 && constant <= 3.5) lineColor = colors[5];
-                if (constant > 3.5 && constant <= 3.8) lineColor = colors[6];
-                if (constant > 3.8 && constant <= 4) lineColor = colors[7];
-                if (constant > 4 && constant <= 4.5) lineColor = colors[8];
-                if (constant > 4.5) lineColor = colors[9];
-                //Width calculation. Applying width and color
-                var scoreLineWidth = studentScore * constant;
+                var scoreLineWidth = (maxWidth * studentScore) / maxScore;
                 var width = scoreLineWidth + "px";
                 var widthForScoreShow = (scoreLineWidth + 5) + "px";
                 div.style.width = width;
                 div.style.height = "18px";
-                div.style.background = lineColor;
-                div.style['vertical-align'] = 'top';
                 div.style['text-indent'] = widthForScoreShow;
-                //Remove .0
+                //Calculate width percent and get score line color
+                var difference = 100 - ((scoreLineWidth / maxWidth) * 100);
+                getColor(difference, div);
+                //Remove .0 from score
                 if (score.charAt(score.length - 1) == "0") {
                     score = score.substring(0, score.length - 2);
                 }
