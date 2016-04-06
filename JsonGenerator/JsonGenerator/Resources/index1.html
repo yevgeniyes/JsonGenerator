@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; Charset=UTF-8">
@@ -130,16 +130,14 @@
             for (var i = 0; i < constantPercent / step; i++) {
                 percent = percent - step;
                 if (difference >= percent && difference <= percent + step) {
-                    var color = "color" + (constantPercent - percent);
                     div.style.background = colors[i];
-                    //alert(color);
                     break;
                 }
             }
         }
         //Creating table based on data model
         function createTable(students) {
-            //Subjects list used to calculate width constant
+            //Subjects list used to calculate maxScore
             var subjectsList = getSubjectsList(students);
             var table = document.createElement("TABLE");
             table.border = 0;
@@ -154,12 +152,10 @@
                 var newCell = newRow.insertCell(0);
                 newCell.setAttribute("class", "name");
                 newCell.innerText = students[i].Name;
-
                 //Cell and div creating
                 var newCell = newRow.insertCell(-1);
                 var div = document.createElement('div');
                 div.setAttribute("class", "line");
-
                 var score = students[i].TotalScore;
                 var studentScore = parseFloat(score);
                 var maxStudentScore = students[0].TotalScore;
