@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; Charset=UTF-8">
@@ -6,6 +6,7 @@
     <style>
         table {
             table-layout: fixed;
+            width: 650px;
         }
 
         tr {
@@ -99,53 +100,38 @@
 
             return students;
         }
-        //Get subjects list
-        function getSubjectsList(students) {
-            var subjectsList = [];
-            for (var i = 0; i < students.length; i++) {
-                if (subjectsList.length == 0) {
-                    subjectsList.push(students[i].Subjects[i].Name);
-                    continue;
-                }
-                var studentI = students[i];
-                for (var j = 0; j < studentI.Subjects.length; j++) {
-                    var subjectExists = false;
-                    var subjectJ = studentI.Subjects[j];
-                    for (var k = 0; k < subjectsList.length; k++) {
-                        if (subjectJ.Name == subjectsList[k]) {
-                            subjectExists = true;
-                            continue;
-                        }
-                    }
-                    if (!subjectExists) subjectsList.push(subjectJ.Name);
-                }
-            }
-            return subjectsList;
-        }
-        //Get color based on percent difference between max score and current score.
-        function getColor(difference, div) {
-            var percent = 100;
-            var step = 5;
-            var constantPercent = percent;
-            for (var i = 0; i < constantPercent / step; i++) {
-                percent = percent - step;
-                if (difference >= percent && difference <= percent + step) {
+        //Set color function
+        function setColor(maxScore, minScore, studentScore, div) {
+            var step = ((maxScore - minScore) / colors.length) + 0.01;
+            var scoreForCheck = parseFloat(minScore);
+
+            for (var i = 0; i < colors.length; i++) {
+                if (studentScore >= scoreForCheck && studentScore < scoreForCheck + step) {
                     div.style.background = colors[i];
                     break;
                 }
+                else scoreForCheck = scoreForCheck + step;
             }
+        }
+        //Set width function
+        function setWidth(maxWidth, maxScore, studentScore, div) {
+            var scoreLineWidth;
+            if (studentScore == maxScore) scoreLineWidth = maxWidth;
+            else scoreLineWidth = (maxWidth * studentScore) / maxScore;
+
+            var width = scoreLineWidth + "px";
+            var widthForScoreShow = (scoreLineWidth + 5) + "px";
+            div.style.width = width;
+            div.style.textIndent = widthForScoreShow;
         }
         //Creating table based on data model
         function createTable(students) {
-            //Subjects list used to calculate maxScore
-            var subjectsList = getSubjectsList(students);
             var table = document.createElement("TABLE");
-            table.border = 0;
-            table.width = 650;
             document.body.appendChild(table);
-            //Constants to calculate current score line width
+            //Set constants
             var maxWidth = 300;
-            var maxScore = subjectsList.length * 5;
+            var maxScore = parseFloat(students[0].TotalScore);
+            var minScore = parseFloat(students[students.length - 1].TotalScore);
             //Table Rows creating
             for (var i = 0; i < students.length; i++) {
                 var newRow = table.insertRow(i);
@@ -156,23 +142,13 @@
                 var newCell = newRow.insertCell(-1);
                 var div = document.createElement('div');
                 div.setAttribute("class", "line");
+                //Get current student score
                 var score = students[i].TotalScore;
                 var studentScore = parseFloat(score);
-                var maxStudentScore = students[0].TotalScore;
-                var scoreLineWidth;
-                if (i == 0) {
-                    scoreLineWidth = maxWidth;
-                }
-                else {
-                    scoreLineWidth = (maxWidth * studentScore) / maxStudentScore;
-                }
-                var width = scoreLineWidth + "px";
-                var widthForScoreShow = (scoreLineWidth + 5) + "px";
-                div.style.width = width;
-                div.style['text-indent'] = widthForScoreShow;
-                //Calculate score difference percent and get score line color
-                var difference = 100 - ((studentScore / maxScore) * 100);
-                getColor(difference, div);
+                //Set width
+                setWidth(maxWidth, maxScore, studentScore, div);
+                //Set color
+                setColor(maxScore, minScore, studentScore, div);
                 //Remove .0 from score
                 if (score.charAt(score.length - 1) == "0") {
                     score = score.substring(0, score.length - 2);
