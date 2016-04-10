@@ -65,28 +65,20 @@ namespace JsonGenerator.Properties {
         ///&lt;html&gt;
         ///&lt;head&gt;
         ///    &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; Charset=UTF-8&quot;&gt;
-        ///    &lt;title&gt;Table with average marks&lt;/title&gt;
+        ///    &lt;title&gt;Academic progress table&lt;/title&gt;
         ///    &lt;style&gt;
-        ///        table {
-        ///            table-layout: fixed;
+        ///        #header {
+        ///            display: none;
+        ///            position: fixed;
+        ///            border: 2px solid #1ABC9C;
+        ///            border-collapse: collapse;
         ///        }
         ///
-        ///        tr {
-        ///            font-size: 115%;
-        ///            font-weight: normal;
-        ///            text-align: center;
-        ///        }
-        ///
-        ///        td {
-        ///            background: #c2c2c2;
-        ///        }
-        ///
-        ///        .good {
-        ///            background: #3dd445;
-        ///        }
-        ///
-        ///        .normal {
-        ///            back [остаток строки не уместился]&quot;;.
+        ///            #header th {
+        ///                vertical-align: middle;
+        ///                display: table-cell;
+        ///                border-collapse: collapse;
+        ///                text-align: ce [остаток строки не уместился]&quot;;.
         /// </summary>
         internal static string index {
             get {
@@ -99,11 +91,12 @@ namespace JsonGenerator.Properties {
         ///&lt;html&gt;
         ///&lt;head&gt;
         ///    &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; Charset=UTF-8&quot;&gt;
-        ///    &lt;title&gt;Diagram of total marks sum&lt;/title&gt;
+        ///    &lt;title&gt;Relative academic progress chart&lt;/title&gt;
         ///    &lt;style&gt;
         ///        table {
         ///            table-layout: fixed;
-        ///            width: 650px;
+        ///            width: 500px;
+        ///            border-collapse: collapse;
         ///        }
         ///
         ///        tr {
@@ -111,15 +104,11 @@ namespace JsonGenerator.Properties {
         ///        }
         ///
         ///        .name {
-        ///            width: 20%;
-        ///            background: #c2c2c2;
-        ///            font-weight: 900;
-        ///            text-align: center;
-        ///        }
-        ///
-        ///        .line {
-        ///            height: 18px;
-        ///  [остаток строки не уместился]&quot;;.
+        ///            width: 25%;
+        ///            font-weight: bolder;
+        ///            background: #1ABC9C;
+        ///            color: #ecf0f1;
+        ///            t [остаток строки не уместился]&quot;;.
         /// </summary>
         internal static string index1 {
             get {

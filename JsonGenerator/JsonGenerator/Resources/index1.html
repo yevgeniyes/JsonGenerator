@@ -1,12 +1,13 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; Charset=UTF-8">
-    <title>Diagram of total marks sum</title>
+    <title>Relative academic progress chart</title>
     <style>
         table {
             table-layout: fixed;
-            width: 650px;
+            width: 500px;
+            border-collapse: collapse;
         }
 
         tr {
@@ -14,14 +15,26 @@
         }
 
         .name {
-            width: 20%;
-            background: #c2c2c2;
-            font-weight: 900;
+            width: 25%;
+            font-weight: bolder;
+            background: #1ABC9C;
+            color: #ecf0f1;
             text-align: center;
         }
 
         .line {
-            height: 18px;
+            height: 15px;
+            color: #34495e;
+        }
+
+        tr:hover .line {
+            height: 20px;
+            font-weight: bolder;
+        }
+
+        tr:hover .name {
+            background: #ecf0f1;
+            color: #34495e;
         }
     </style>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
@@ -104,14 +117,7 @@
         function setColor(maxScore, minScore, studentScore, div) {
             var step = ((maxScore - minScore) / colors.length) + 0.01;
             var scoreForCheck = parseFloat(minScore);
-
-            for (var i = 0; i < colors.length; i++) {
-                if (studentScore >= scoreForCheck && studentScore < scoreForCheck + step) {
-                    div.style.background = colors[i];
-                    break;
-                }
-                else scoreForCheck = scoreForCheck + step;
-            }
+            div.style.background = colors[parseInt((studentScore - minScore) / step)];
         }
         //Set width function
         function setWidth(maxWidth, maxScore, studentScore, div) {
@@ -166,8 +172,8 @@
 </head>
 <body>
     <form action="index.html">
-        <p>Click button to view: <button type="submit">Table with average marks</button></p>
+        <p>Click the button to view: <button type="submit">Academic progress table</button></p>
     </form>
-    <h1>Diagram of total marks sum</h1>
+    <h1>Relative academic progress chart</h1>
 </body>
 </html>

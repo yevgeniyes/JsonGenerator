@@ -9,7 +9,8 @@ namespace JsonGenerator
         /// </summary>
         public static string GetRandomeName(Random random)
         {
-            string[] studentsNames = { "Ivanov", "Petrov", "Sidorov", "Vasilev", "Koltsov", "Makarova", "Zubkov", "Evseev", "Kolobkova", "Romanova", "Abramov", "Borisov" };
+            string[] studentsNames = { "Ivanov", "Petrov", "Sidorov", "Vasilev", "Koltsov", "Makarova", "Zubkov", "Evseev", "Kolobkova", "Romanova", "Abramov", "Borisov",
+                "Pivovarov", "Serov", "Porechenko", "Terkov", "Astahov", "Belov", "Timofeev", "Tinkov", "Fadeev", "Bobrov", "Sergienko", "Kurochkina", "Sobolev", "Hohlov" };
             string studentName = studentsNames[random.Next(studentsNames.Length)];
             return studentName;
         }

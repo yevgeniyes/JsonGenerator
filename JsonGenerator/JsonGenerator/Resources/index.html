@@ -1,37 +1,89 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; Charset=UTF-8">
-    <title>Table with average marks</title>
+    <title>Academic progress table</title>
     <style>
-        table {
-            table-layout: fixed;
+        #header {
+            display: none;
+            position: fixed;
+            border: 2px solid #1ABC9C;
+            border-collapse: collapse;
         }
 
-        tr {
-            font-size: 115%;
-            font-weight: normal;
-            text-align: center;
+            #header th {
+                vertical-align: middle;
+                display: table-cell;
+                border-collapse: collapse;
+                text-align: center;
+                font-weight: bolder;
+                background: #c2c2c2;
+                color: #34495e;
+            }
+
+        #tbody {
+            display: none;
+            position: fixed;
+            border-collapse: collapse;
+        }
+
+        #myTable {
+            table-layout: fixed;
+            border: 2px solid #1ABC9C;
+            border-collapse: collapse;
+        }
+
+        thead {
+            font-weight: bolder;
+        }
+
+        tbody tr:hover, tbody tr:hover td {
+            background: #ecf0f1;
+            color: #34495e;
         }
 
         td {
-            background: #c2c2c2;
+            font-size: 115%;
+            height: 25px;
+            border: 2px solid #1ABC9C;
+            color: #34495e;
         }
 
+        tbody tr {
+            text-align: center;
+            background: #bdc3c7;
+        }
+
+        th {
+            background: #c2c2c2;
+            color: #34495e;
+        }
+
+        .name {
+            font-weight: bolder;
+            background: #1ABC9C;
+            color: #ecf0f1;
+        }
+
+            .name:hover, tbody tr:hover .name {
+                background: #1ABC9C;
+                color: #ecf0f1;
+            }
+
         .good {
-            background: #3dd445;
+            background: #2ecc71;
         }
 
         .normal {
-            background: #afeb49;
+            background: #e9d460;
         }
 
         .low {
-            background: #edd861;
+            background: #F5AB35;
         }
 
         .bad {
-            background: #f27d66;
+            background: #EC644B;
         }
     </style>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
@@ -139,27 +191,38 @@
             //Subjects list used to build header and make equal column width
             var subjectsList = getSubjectsList(students);
             subjectsList.sort();
-
+            var tableWidth = (subjectsList.length + 1) * 130;
+            //Rows header copy creating
+            var tbody = document.createElement("TABLE");
+            tbody.setAttribute("id", "tbody");
+            document.body.appendChild(tbody);
+            document.getElementById("tbody").style.width = tableWidth / (subjectsList.length + 1);
+            //Header copy creating
+            var header = document.createElement("TABLE");
+            header.setAttribute("id", "header");
+            document.body.appendChild(header);
+            document.getElementById("header").style.width = tableWidth + "px";
+            //Creating table
             var table = document.createElement("TABLE");
-            table.border = 0;
-            table.width = subjectsList.length * 125;
+            table.setAttribute("id", "myTable");
+            table.width = tableWidth;
             document.body.appendChild(table);
             //Table Header creating
-            var newRow = table.insertRow(0);
+            var mainHeader = table.createTHead();
+            var newRow = mainHeader.insertRow(0);
             var newCell = newRow.insertCell(0);
-            newCell.style['background'] = 'transparent';
-
+            newCell.outerHTML = "<th>Student</th>";
             for (var i = 0; i < subjectsList.length; i++) {
                 var newCell = newRow.insertCell(-1);
-                newCell.innerText = subjectsList[i];
-                newCell.style['font-weight'] = '900';
+                newCell.outerHTML = "<th>" + subjectsList[i] + "</th>";
             }
+            var tbody = table.createTBody();
             //Table Rows creating
             for (var i = 0; i < students.length; i++) {
-                var newRow = table.insertRow(i + 1);
+                var newRow = tbody.insertRow(i);
                 var newCell = newRow.insertCell(0);
-                newCell.innerHTML = students[i].Name;
-                newCell.style['font-weight'] = '900';
+                newCell.innerText = students[i].Name;
+                newCell.setAttribute("class", "name");
 
                 for (var j = 0; j < subjectsList.length; j++) {
                     var newCell = newRow.insertCell(-1);
@@ -168,12 +231,10 @@
                     for (var k = 0; k < students[i].Subjects.length; k++) {
                         var studentK = students[i].Subjects[k]
                         if (studentK.Name == subjectFromList && studentK.Average != null) {
-                            newCell.style['font-size'] = '120%';
-
                             if (studentK.Average.charAt(studentK.Average.length - 1) == "0") {
                                 studentK.Average = studentK.Average.substring(0, 1);
                             }
-                            newCell.innerHTML = studentK.Average;
+                            newCell.innerText = studentK.Average;
 
                             switch (studentK.Average.charAt(0)) {
                                 case "5": newCell.setAttribute("class", "good");
@@ -190,17 +251,91 @@
                 }
             }
         }
+        //Creating hidden copies of horizontal and vertical headers
+        function createHeaderCopy() {
+            //Vertical header
+            var $table = $('table'),
+				$newtbody = $('#tbody'),
+				$tbody = $('tbody');
+            $tbody.find('.name').each(function () {
+                var $newtr = $('<tr />');
+                var $newtd = $('<td />');
+                $newtd.css({
+                    width: $(this).width(),
+                    height: $(this).height()
+                });
+                $newtd.text($(this).text());
+                $newtd.attr("class", "name");
+                $newtr.append($newtd);
+                $newtbody.append($newtr);
+            });
+            //Horizontal header
+            var $table = $('table'),
+				$header = $('#header'),
+				$thead = $('thead');
+            $thead.find('th').each(function () {
+                var $newth = $('<th />');
+                $newth.css({
+                    width: $(this).width()
+                });
+                $newth.text($(this).text());
+                $header.append($newth);
+            });
+            //Making horizontal header moving horizontally and vertical header moving vertically on scroll
+            $(window).scroll(function () {
+                $header.css({
+                    left: -$(window).scrollLeft() + $tbody.position().left - 1
+                });
+                $newtbody.css({
+                    top: -$(window).scrollTop() + $tbody.position().top - 1
+                });
+            });
+        }
+        //Making sticky headers on scroll
+        function stickHeaderCopyOnScroll() {
+            var table = document.getElementById("myTable");
+            var stickyHeader = document.getElementById("header");
+            var stickyTbody = document.getElementById("tbody");
+            var stuck = false;
+            var tbstuck = false;
+
+            window.onscroll = function () {
+                var distance = table.offsetTop - window.pageYOffset;
+                var distanceLeft = table.offsetLeft - window.pageXOffset;
+
+                if (distance <= 0 && !stuck) {
+                    stickyHeader.style.display = 'block';
+                    stickyHeader.style.top = '0px';
+                    stuck = true;
+                } else if (stuck && distance > 0) {
+                    stickyHeader.style.display = 'none';
+                    stuck = false;
+                }
+                if (distanceLeft <= 0 && !tbstuck) {
+                    stickyTbody.style.display = 'block';
+                    stickyTbody.style.left = '0px';
+                    tbstuck = true;
+                } else if (tbstuck && distanceLeft > 0) {
+                    stickyTbody.style.display = 'none';
+                    tbstuck = false;
+                }
+            }
+        }
         //Main function
         $(document).ready(function () {
             var model = createModel();
             createTable(model);
+            createHeaderCopy();
+            stickHeaderCopyOnScroll();
         });
     </script>
 </head>
 <body>
-    <form action="index1.html">
-        <p>Click button to view: <button type="submit">Diagram of total marks sum</button></p>
-    </form>
-    <h1>Table with average marks</h1>
+    <header>
+        <form action="index1.html">
+            <p>Click the button to view: <button type="submit">Relative academic progress chart</button></p>
+        </form>
+        <h1>Academic progress table</h1>
+    </header>
 </body>
 </html>
