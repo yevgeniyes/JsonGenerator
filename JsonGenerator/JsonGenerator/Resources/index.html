@@ -216,12 +216,13 @@
                 var newCell = newRow.insertCell(-1);
                 newCell.outerHTML = "<th>" + subjectsList[i] + "</th>";
             }
-            var tbody = table.createTBody();
-            //Table Rows creating
+            var tbody = document.createElement("tbody");
+			table.appendChild(tbody);
+			//Table Rows creating
             for (var i = 0; i < students.length; i++) {
                 var newRow = tbody.insertRow(i);
                 var newCell = newRow.insertCell(0);
-                newCell.innerText = students[i].Name;
+                newCell.innerHTML = students[i].Name;
                 newCell.setAttribute("class", "name");
 
                 for (var j = 0; j < subjectsList.length; j++) {
@@ -234,7 +235,7 @@
                             if (studentK.Average.charAt(studentK.Average.length - 1) == "0") {
                                 studentK.Average = studentK.Average.substring(0, 1);
                             }
-                            newCell.innerText = studentK.Average;
+                            newCell.innerHTML = studentK.Average;
 
                             switch (studentK.Average.charAt(0)) {
                                 case "5": newCell.setAttribute("class", "good");
@@ -260,10 +261,8 @@
             $tbody.find('.name').each(function () {
                 var $newtr = $('<tr />');
                 var $newtd = $('<td />');
-                $newtd.css({
-                    width: $(this).width(),
-                    height: $(this).height()
-                });
+				$newtd.css("width", $(this).width());
+				//$newtd.css("height", $(this).height());
                 $newtd.text($(this).text());
                 $newtd.attr("class", "name");
                 $newtr.append($newtd);
@@ -284,7 +283,7 @@
             //Making horizontal header moving horizontally and vertical header moving vertically on scroll
             $(window).scroll(function () {
                 $header.css({
-                    left: -$(window).scrollLeft() + $tbody.position().left - 1
+                    left: -$(window).scrollLeft() + $thead.position().left - 1
                 });
                 $newtbody.css({
                     top: -$(window).scrollTop() + $tbody.position().top - 1

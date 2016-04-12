@@ -143,7 +143,7 @@
                 var newRow = table.insertRow(i);
                 var newCell = newRow.insertCell(0);
                 newCell.setAttribute("class", "name");
-                newCell.innerText = students[i].Name;
+                newCell.innerHTML = students[i].Name;
                 //Cell and div creating
                 var newCell = newRow.insertCell(-1);
                 var div = document.createElement('div');
@@ -159,7 +159,7 @@
                 if (score.charAt(score.length - 1) == "0") {
                     score = score.substring(0, score.length - 2);
                 }
-                div.innerText = score;
+                div.innerHTML = score;
                 newCell.appendChild(div);
             }
         }
